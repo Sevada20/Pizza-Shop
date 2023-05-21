@@ -1,15 +1,13 @@
 import React from "react";
 
-const Sort = () => {
-  const list = ["популярности", "цене", "алфавиту"];
-  const [selected, setSelected] = React.useState(0);
+const Sort = ({ value, onChangeSort }) => {
+  const list = [
+    { name: "популярности", sortProperty: "rating" },
+    { name: "цене", sortProperty: "price" },
+    { name: "алфавиту", sortProperty: "title" },
+  ];
   const [open, setOpen] = React.useState(false);
-  const sortName = list[selected];
-
-  const onClickListItem = (i) => {
-    setSelected(i);
-    setOpen(false);
-  };
+  const sortName = list[value].name;
 
   return (
     <div className="sort">
@@ -32,13 +30,16 @@ const Sort = () => {
       <div className="sort__popup">
         <ul>
           {open &&
-            list.map((item, i) => (
+            list.map((obj, i) => (
               <li
                 key={i}
-                onClick={() => onClickListItem(i)}
-                className={selected === i ? "active" : ""}
+                onClick={() => {
+                  setOpen(false);
+                  onChangeSort(obj.sortProperty);
+                }}
+                className={value === i ? "active" : ""}
               >
-                {item}
+                {obj.name}
               </li>
             ))}
         </ul>

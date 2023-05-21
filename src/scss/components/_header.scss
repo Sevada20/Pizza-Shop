@@ -1,4 +1,4 @@
-@import '../variables';
+@import "../variables";
 
 .header {
   border-bottom: 1px solid $gray-line;
@@ -6,8 +6,13 @@
 
   .container {
     display: flex;
+    gap: 20px;
     align-items: center;
     justify-content: space-between;
+
+    @media (max-width: 600px) {
+      flex-direction: column;
+    }
   }
 
   &__logo {
