@@ -8,14 +8,19 @@ const Home = () => {
   const [pizzas, setPizzas] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const [categoryId, setCategoryId] = React.useState(0);
-  const [sortType, setSortType] = React.useState("");
+  const [sortType, setSortType] = React.useState({
+    name: "популярности",
+    sortProperty: "rating",
+  });
+
+  const order = sortType.sortProperty.includes("-") ? "asc" : "desc";
+  const sortBy = sortType.sortProperty.replace("-", "");
+  const category = categoryId > 0 ? categoryId : "";
 
   React.useEffect(() => {
     setIsLoading(true);
     fetch(
-      `https://6466842bba7110b663a2c623.mockapi.io/items?category=${
-        categoryId ? categoryId : ""
-      }&sortBy=${sortType}`
+      `https://6466842bba7110b663a2c623.mockapi.io/items?category=${category}&sortBy=${sortBy}&order=${order}`
     )
       .then((response) => response.json())
       .then((response) => {
