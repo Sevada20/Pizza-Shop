@@ -1,10 +1,10 @@
+import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
-import "./scss/app.scss";
 import Cart from "./pages/Cart";
-import React from "react";
+import "./scss/app.scss";
 
 function App() {
   const [searchValue, setSearchValue] = React.useState("");
