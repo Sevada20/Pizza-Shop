@@ -4,19 +4,22 @@ import Categories from "../components/Categories";
 import PizzaBlock from "../components/PizzaBlock";
 import Sort from "../components/Sort";
 import Pagination from "../components/Pagination";
+import { setCategory } from "../redux/slices/filterSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const Home = ({ searchValue }) => {
+  const {
+    categoryId,
+    sort: { sortProperty },
+  } = useSelector((state) => state.filter);
+  const dispatch = useDispatch();
+
   const [currentPage, setCurrentPage] = React.useState(1);
   const [items, setItems] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
-  const [categoryId, setCategoryId] = React.useState(0);
-  const [sortType, setSortType] = React.useState({
-    name: "популярности",
-    sortProperty: "rating",
-  });
 
-  const order = sortType.sortProperty.includes("-") ? "asc" : "desc";
-  const sortBy = sortType.sortProperty.replace("-", "");
+  const order = sortProperty.includes("-") ? "asc" : "desc";
+  const sortBy = sortProperty.replace("-", "");
   const category = categoryId > 0 ? `category=${categoryId}` : "";
   const search = searchValue ? `&search=${searchValue}` : "";
 
@@ -46,9 +49,9 @@ const Home = ({ searchValue }) => {
       <div className="content__top">
         <Categories
           value={categoryId}
-          onChangeCategory={(i) => setCategoryId(i)}
+          onChangeCategory={(i) => dispatch(setCategory(i))}
         />
-        <Sort value={sortType} onChangeSort={(i) => setSortType(i)} />
+        <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">{isLoading ? skeletons : pizzas}</div>
