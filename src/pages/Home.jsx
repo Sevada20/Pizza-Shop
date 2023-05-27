@@ -2,19 +2,20 @@ import React from "react";
 import Skeleton from "../components/PizzaBlock/Skeleton";
 import Categories from "../components/Categories";
 import PizzaBlock from "../components/PizzaBlock";
-import Sort from "../components/Sort";
 import Pagination from "../components/Pagination";
-import { setCategory } from "../redux/slices/filterSlice";
+import { setCategory, setCurrentPage } from "../redux/slices/filterSlice";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import Sort from "../components/Sort";
 
 const Home = ({ searchValue }) => {
   const {
     categoryId,
+    currentPage,
     sort: { sortProperty },
   } = useSelector((state) => state.filter);
   const dispatch = useDispatch();
 
-  const [currentPage, setCurrentPage] = React.useState(1);
   const [items, setItems] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
 
@@ -23,15 +24,19 @@ const Home = ({ searchValue }) => {
   const category = categoryId > 0 ? `category=${categoryId}` : "";
   const search = searchValue ? `&search=${searchValue}` : "";
 
+  const onChangePage = (id) => {
+    dispatch(setCurrentPage(id));
+  };
+
   React.useEffect(() => {
     setIsLoading(true);
-    fetch(
-      `https://6466842bba7110b663a2c623.mockapi.io/items?p=${currentPage}&l=4&${category}&sortBy=${sortBy}${search}&order=${order}`
-    )
-      .then((response) => response.json())
-      .then((response) => {
+    axios
+      .get(
+        `https://6466842bba7110b663a2c623.mockapi.io/items?p=${currentPage}&l=4&${category}&sortBy=${sortBy}${search}&order=${order}`
+      )
+      .then(({ data }) => {
         setIsLoading(false);
-        setItems(response);
+        setItems(data);
       })
       .catch(() => {
         setIsLoading(false);
@@ -55,7 +60,7 @@ const Home = ({ searchValue }) => {
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">{isLoading ? skeletons : pizzas}</div>
-      <Pagination onChangePage={(index) => setCurrentPage(index)} />
+      <Pagination onChangePage={onChangePage} />
     </div>
   );
 };
