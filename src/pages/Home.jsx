@@ -35,22 +35,6 @@ const Home = ({ searchValue }) => {
     dispatch(setCurrentPage(id));
   };
 
-  const fetchPizzas = () => {
-    setIsLoading(true);
-    axios
-      .get(
-        `https://6466842bba7110b663a2c623.mockapi.io/items?p=${currentPage}&l=4&${category}&sortBy=${sortBy}${search}&order=${order}`
-      )
-      .then(({ data }) => {
-        setIsLoading(false);
-        setItems(data);
-      })
-      .catch(() => {
-        setIsLoading(false);
-      });
-    window.scrollTo(0, 0);
-  };
-
   React.useEffect(() => {
     if (window.location.search) {
       const params = qs.parse(window.location.search.substring(1));
@@ -68,7 +52,19 @@ const Home = ({ searchValue }) => {
 
   React.useEffect(() => {
     if (!isSearch.current) {
-      fetchPizzas();
+      setIsLoading(true);
+      axios
+        .get(
+          `https://6466842bba7110b663a2c623.mockapi.io/items?p=${currentPage}&l=4&${category}&sortBy=${sortBy}${search}&order=${order}`
+        )
+        .then(({ data }) => {
+          setIsLoading(false);
+          setItems(data);
+        })
+        .catch(() => {
+          setIsLoading(false);
+        });
+      window.scrollTo(0, 0);
     }
     isSearch.current = false;
   }, [order, sortBy, category, search, currentPage]);
