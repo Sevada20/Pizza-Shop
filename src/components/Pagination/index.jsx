@@ -1,11 +1,14 @@
+import { useSelector } from "react-redux";
 import styles from "./Pagination.module.scss";
 import ReactPaginate from "react-paginate";
 
 const Pagination = ({ onChangePage }) => {
+  const currentPage = useSelector((state) => state.filter.currentPage);
   return (
     <ReactPaginate
       className={styles.root}
       breakLabel="..."
+      forcePage={currentPage - 1}
       nextLabel=">"
       onPageChange={(e) => onChangePage(e.selected + 1)}
       pageRangeDisplayed={4}
