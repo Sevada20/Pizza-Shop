@@ -23,9 +23,9 @@ const filterSlice = createSlice({
       state.currentPage = action.payload;
     },
     setFilters(state, action) {
-      state.categoryId = action.payload.categoryId;
-      state.currentPage = action.payload.currentPage;
-      state.sort.sortProperty = action.payload.sortProperty;
+      state.sort = action.payload.sort;
+      state.categoryId = +action.payload.categoryId;
+      state.currentPage = +action.payload.currentPage;
     },
   },
 });
