@@ -1,14 +1,21 @@
 import React from "react";
+import qs from "qs";
 import Skeleton from "../components/PizzaBlock/Skeleton";
 import Categories from "../components/Categories";
 import PizzaBlock from "../components/PizzaBlock";
 import Pagination from "../components/Pagination";
-import { setCategory, setCurrentPage } from "../redux/slices/filterSlice";
-import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
 import Sort from "../components/Sort";
+import {
+  setCategory,
+  setCurrentPage,
+  setFilters,
+} from "../redux/slices/filterSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Home = ({ searchValue }) => {
+  const navigate = useNavigate();
   const {
     categoryId,
     currentPage,
@@ -29,6 +36,13 @@ const Home = ({ searchValue }) => {
   };
 
   React.useEffect(() => {
+    if (window.location.search) {
+      const params = qs.parse(window.location.search.substring(1));
+      dispatch(setFilters(params));
+    }
+  }, []);
+
+  React.useEffect(() => {
     setIsLoading(true);
     axios
       .get(
@@ -43,6 +57,15 @@ const Home = ({ searchValue }) => {
       });
     window.scrollTo(0, 0);
   }, [order, sortBy, category, search, currentPage]);
+
+  React.useEffect(() => {
+    const queryString = qs.stringify({
+      sortProperty,
+      categoryId,
+      currentPage,
+    });
+    navigate(`?${queryString}`);
+  }, [navigate, sortProperty, categoryId, currentPage]);
 
   const skeletons = [...new Array(6)].map((_, index) => (
     <Skeleton key={index} />
