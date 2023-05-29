@@ -17,9 +17,17 @@ const Sort = () => {
   const sortPopupRef = React.useRef();
 
   React.useEffect(() => {
-    document.body.addEventListener("click", (event) => {
-      console.log(event.target);
-    });
+    const handleClick = (event) => {
+      if (!sortPopupRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+
+    document.body.addEventListener("click", handleClick);
+
+    return () => {
+      document.body.removeEventListener("click", handleClick);
+    };
   }, []);
 
   return (
