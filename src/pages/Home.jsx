@@ -51,22 +51,40 @@ const Home = ({ searchValue }) => {
   }, [dispatch]);
 
   React.useEffect(() => {
-    if (!isSearch.current) {
-      setIsLoading(true);
-      axios
-        .get(
+    const fetchPizzas = async () => {
+      try {
+        setIsLoading(true);
+        const response = await axios.get(
           `https://6466842bba7110b663a2c623.mockapi.io/items?p=${currentPage}&l=4&${category}&sortBy=${sortBy}${search}&order=${order}`
-        )
-        .then(({ data }) => {
-          setIsLoading(false);
-          setItems(data);
-        })
-        .catch(() => {
-          setIsLoading(false);
-        });
+        );
+        setIsLoading(false);
+        setItems(response.data);
+      } catch (error) {
+        setIsLoading(false);
+      }
       window.scrollTo(0, 0);
+    };
+    if (!isSearch.current) {
+      fetchPizzas();
     }
     isSearch.current = false;
+
+    // if (!isSearch.current) {
+    //   setIsLoading(true);
+    //   axios
+    //     .get(
+    //       `https://6466842bba7110b663a2c623.mockapi.io/items?p=${currentPage}&l=4&${category}&sortBy=${sortBy}${search}&order=${order}`
+    //     )
+    //     .then(({ data }) => {
+    //       setIsLoading(false);
+    //       setItems(data);
+    //     })
+    //     .catch(() => {
+    //       setIsLoading(false);
+    //     });
+    //   window.scrollTo(0, 0);
+    // }
+    // isSearch.current = false;
   }, [order, sortBy, category, search, currentPage]);
 
   React.useEffect(() => {
