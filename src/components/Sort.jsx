@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setSortType } from "../redux/slices/filterSlice";
+import { selectSort, setSortType } from "../redux/slices/filterSlice";
 
 export const list = [
   { name: "популярности(DESC)", sortProperty: "rating" },
@@ -12,7 +12,7 @@ export const list = [
 ];
 const Sort = () => {
   const dispatch = useDispatch();
-  const sort = useSelector((state) => state.filter.sort);
+  const sort = useSelector(selectSort);
   const [open, setOpen] = React.useState(false);
   const sortPopupRef = React.useRef();
 

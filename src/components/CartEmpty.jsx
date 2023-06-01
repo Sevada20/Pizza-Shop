@@ -4,7 +4,7 @@ const CartEmpty = () => {
   return (
     <div className="cart cart--empty">
       <h2>
-        The Cart is empty <icon>😕</icon>
+        The Cart is empty <span>😕</span>
       </h2>
       <p>
         Most likely, you haven't ordered pizza yet.
@@ -12,7 +12,7 @@ const CartEmpty = () => {
         To order pizza, please go to the main page.
       </p>
       <img src={emptyCart} alt="Empty cart" />
-      <Link to="/" class="button button--black">
+      <Link to="/" className="button button--black">
         <span>Go back</span>
       </Link>
     </div>
