@@ -27,8 +27,8 @@ const Sort: React.FC = () => {
   };
 
   React.useEffect(() => {
-    const handleClick = (event: any) => {
-      if (!sortPopupRef.current?.contains(event.target)) {
+    const handleClick = (event: MouseEvent) => {
+      if (!sortPopupRef.current?.contains(event.target as Node)) {
         setOpen(false);
       }
     };
