@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { fetchPizzas, selectPizza } from "../redux/slices/pizzaSlice";
 import qs from "qs";
 
-const Home = () => {
+const Home: React.FC = () => {
   const isMounted = React.useRef(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -28,8 +28,8 @@ const Home = () => {
   const category = categoryId > 0 ? `category=${categoryId}` : "";
   const search = searchValue ? `&search=${searchValue}` : "";
 
-  const onChangePage = (id) => {
-    dispatch(setCurrentPage(id));
+  const onChangePage = (page: number) => {
+    dispatch(setCurrentPage(page));
   };
 
   React.useEffect(() => {
@@ -46,7 +46,10 @@ const Home = () => {
   }, [dispatch]);
 
   React.useEffect(() => {
-    dispatch(fetchPizzas({ order, sortBy, category, search, currentPage }));
+    dispatch(
+      //@ts-ignore
+      fetchPizzas({ order, sortBy, category, search, currentPage })
+    );
     window.scrollTo(0, 0);
   }, [dispatch, order, sortBy, category, search, currentPage]);
 
@@ -65,14 +68,14 @@ const Home = () => {
   const skeletons = [...new Array(6)].map((_, index) => (
     <Skeleton key={index} />
   ));
-  const pizzas = items.map((obj) => <PizzaBlock {...obj} key={obj.id} />);
+  const pizzas = items.map((obj: any) => <PizzaBlock {...obj} key={obj.id} />);
 
   return (
     <div className="container">
       <div className="content__top">
         <Categories
           value={categoryId}
-          onChangeCategory={(i) => dispatch(setCategory(i))}
+          onChangeCategory={(i: number) => dispatch(setCategory(i))}
         />
         <Sort />
       </div>
