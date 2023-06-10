@@ -10,19 +10,23 @@ import {
   setCurrentPage,
   setFilters,
 } from "../redux/slices/filterSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { fetchPizzas, selectPizza } from "../redux/slices/pizzaSlice";
+import {
+  fetchPizzas,
+  selectPizza,
+  SearchPizzaParams,
+} from "../redux/slices/pizzaSlice";
 import qs from "qs";
+import { useAppDispatch } from "../redux/store";
 
 const Home: React.FC = () => {
   const isMounted = React.useRef(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { items, status } = useSelector(selectPizza);
   const { categoryId, currentPage, sort, searchValue } =
     useSelector(selectFilter);
-
   const order = sort.sortProperty.includes("-") ? "asc" : "desc";
   const sortBy = sort.sortProperty.replace("-", "");
   const category = categoryId > 0 ? `category=${categoryId}` : "";
@@ -33,37 +37,46 @@ const Home: React.FC = () => {
   };
 
   React.useEffect(() => {
-    if (window.location.search) {
-      const params = qs.parse(window.location.search.substring(1));
-      const sort = list.find((obj) => obj.sortProperty === params.sortProperty);
-      dispatch(
-        setFilters({
-          ...params,
-          sort,
-        })
-      );
-    }
-  }, [dispatch]);
-
-  React.useEffect(() => {
     dispatch(
-      //@ts-ignore
-      fetchPizzas({ order, sortBy, category, search, currentPage })
+      fetchPizzas({
+        sortBy,
+        order,
+        category,
+        search,
+        currentPage: String(currentPage),
+      })
     );
     window.scrollTo(0, 0);
   }, [dispatch, order, sortBy, category, search, currentPage]);
 
-  React.useEffect(() => {
-    if (isMounted.current) {
-      const queryString = qs.stringify({
-        sortProperty: sort.sortProperty,
-        categoryId,
-        currentPage,
-      });
-      navigate(`?${queryString}`);
-    }
-    isMounted.current = true;
-  }, [navigate, sort.sortProperty, categoryId, currentPage]);
+  // React.useEffect(() => {
+  //   if (isMounted.current) {
+  //     const queryString = qs.stringify({
+  //       sortProperty: sort.sortProperty,
+  //       categoryId,
+  //       currentPage,
+  //     });
+  //     navigate(`?${queryString}`);
+  //   }
+  //   isMounted.current = true;
+  // }, [navigate, sort.sortProperty, categoryId, currentPage]);
+
+  // React.useEffect(() => {
+  //   if (window.location.search) {
+  //     const params = qs.parse(
+  //       window.location.search.substring(1)
+  //     ) as unknown as SearchPizzaParams;
+  //     const sort = list.find((obj) => obj.sortProperty === params.sortBy);
+  //     dispatch(
+  //       setFilters({
+  //         searchValue: params.search,
+  //         categoryId: +params.category,
+  //         currentPage: +params.currentPage,
+  //         sort: sort ? sort : list[0],
+  //       })
+  //     );
+  //   }
+  // }, [dispatch]);
 
   const skeletons = [...new Array(6)].map((_, index) => (
     <Skeleton key={index} />
