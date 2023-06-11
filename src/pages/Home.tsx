@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import Skeleton from "../components/PizzaBlock/Skeleton";
 import Categories from "../components/Categories";
 import PizzaBlock from "../components/PizzaBlock";
@@ -6,6 +6,7 @@ import Pagination from "../components/Pagination";
 import Sort, { list } from "../components/Sort";
 import {
   selectFilter,
+  selectSort,
   setCategory,
   setCurrentPage,
   // setFilters,
@@ -36,7 +37,10 @@ const Home: React.FC = () => {
     dispatch(setCurrentPage(page));
   };
 
-  const onChangeCategory = (i: number) => dispatch(setCategory(i));
+  const onChangeCategory = React.useCallback(
+    (i: number) => dispatch(setCategory(i)),
+    [dispatch]
+  );
 
   React.useEffect(() => {
     dispatch(
@@ -89,7 +93,7 @@ const Home: React.FC = () => {
     <div className="container">
       <div className="content__top">
         <Categories value={categoryId} onChangeCategory={onChangeCategory} />
-        <Sort />
+        <Sort sort={sort} />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       {status === "error" ? (
