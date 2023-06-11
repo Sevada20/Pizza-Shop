@@ -26,8 +26,9 @@ const Home: React.FC = () => {
   // const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { items, status } = useSelector(selectPizza);
-  const { categoryId, currentPage, sort, searchValue } =
+  const { categoryId, currentPage, searchValue } =
     useSelector(selectFilter);
+  const sort = useSelector(selectSort)
   const order = sort.sortProperty.includes("-") ? "asc" : "desc";
   const sortBy = sort.sortProperty.replace("-", "");
   const category = categoryId > 0 ? `category=${categoryId}` : "";
