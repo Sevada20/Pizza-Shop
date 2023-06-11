@@ -1,5 +1,5 @@
 import React from "react";
-
+import { useWhyDidYouUpdate } from "ahooks";
 const categories = [
   "Все",
   "Мясные",
@@ -15,6 +15,7 @@ type CategoriesProps = {
 };
 
 const Categories: React.FC<CategoriesProps> = ({ value, onChangeCategory }) => {
+  useWhyDidYouUpdate("Categories", { value, onChangeCategory });
   return (
     <div className="categories">
       <ul>
