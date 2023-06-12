@@ -3,11 +3,10 @@ import { Link } from "react-router-dom";
 import logo from "../assets/img/pizza-logo.svg";
 import Search from "./Search";
 import { useDispatch, useSelector } from "react-redux";
-import { addItem, selectCart } from "../redux/slices/cartSlice";
+import { selectCart } from "../redux/slices/cart/selectors";
 
 const Header = () => {
   const { totalPrice, items } = useSelector(selectCart);
-  const dispatch = useDispatch();
   const isMounted = React.useRef(false);
 
   const totalCount = items.reduce((sum: number, item: any) => {
@@ -17,7 +16,7 @@ const Header = () => {
   React.useEffect(() => {
     if (isMounted.current) {
       const json = JSON.stringify(items);
-      window.localStorage.setItem("cart", json);
+      localStorage.setItem("cart", json);
     }
     isMounted.current = true;
   }, [items]);

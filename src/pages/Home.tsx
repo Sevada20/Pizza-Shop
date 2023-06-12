@@ -4,31 +4,22 @@ import Categories from "../components/Categories";
 import PizzaBlock from "../components/PizzaBlock";
 import Pagination from "../components/Pagination";
 import Sort, { list } from "../components/Sort";
-import {
-  selectFilter,
-  selectSort,
-  setCategory,
-  setCurrentPage,
-  // setFilters,
-} from "../redux/slices/filterSlice";
 import { useSelector } from "react-redux";
 // import { useNavigate } from "react-router-dom";
-import {
-  fetchPizzas,
-  selectPizza,
-  // SearchPizzaParams,
-} from "../redux/slices/pizzaSlice";
 // import qs from "qs";
 import { useAppDispatch } from "../redux/store";
+import { selectFilter, selectSort } from "../redux/slices/filter/selectors";
+import { setCategory, setCurrentPage } from "../redux/slices/filter/slice";
+import { selectPizza } from "../redux/slices/pizza/selectors";
+import { fetchPizzas } from "../redux/slices/pizza/slice";
 
 const Home: React.FC = () => {
   // const isMounted = React.useRef(false);
   // const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { items, status } = useSelector(selectPizza);
-  const { categoryId, currentPage, searchValue } =
-    useSelector(selectFilter);
-  const sort = useSelector(selectSort)
+  const { categoryId, currentPage, searchValue } = useSelector(selectFilter);
+  const sort = useSelector(selectSort);
   const order = sort.sortProperty.includes("-") ? "asc" : "desc";
   const sortBy = sort.sortProperty.replace("-", "");
   const category = categoryId > 0 ? `category=${categoryId}` : "";
