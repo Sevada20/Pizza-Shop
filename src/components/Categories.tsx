@@ -1,5 +1,4 @@
 import React from "react";
-import { useWhyDidYouUpdate } from "ahooks";
 const categories = [
   "Все",
   "Мясные",

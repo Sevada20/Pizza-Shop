@@ -1,7 +1,7 @@
-import { useSelector } from "react-redux";
 import styles from "./Pagination.module.scss";
 import ReactPaginate from "react-paginate";
 import { RootState } from "../../redux/store";
+import { useSelector } from "react-redux";
 
 type PaginationProps = {
   onChangePage: (page: number) => void;

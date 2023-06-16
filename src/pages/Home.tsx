@@ -1,12 +1,12 @@
 import React from "react";
-import Skeleton from "../components/PizzaBlock/Skeleton";
-import Categories from "../components/Categories";
-import PizzaBlock from "../components/PizzaBlock";
-import Pagination from "../components/Pagination";
-import Sort, { list } from "../components/Sort";
+import {
+  Skeleton,
+  Categories,
+  PizzaBlock,
+  Pagination,
+  Sort,
+} from "../components";
 import { useSelector } from "react-redux";
-// import { useNavigate } from "react-router-dom";
-// import qs from "qs";
 import { useAppDispatch } from "../redux/store";
 import { selectFilter, selectSort } from "../redux/slices/filter/selectors";
 import { setCategory, setCurrentPage } from "../redux/slices/filter/slice";
@@ -14,9 +14,8 @@ import { selectPizza } from "../redux/slices/pizza/selectors";
 import { fetchPizzas } from "../redux/slices/pizza/slice";
 
 const Home: React.FC = () => {
-  // const isMounted = React.useRef(false);
-  // const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
   const { items, status } = useSelector(selectPizza);
   const { categoryId, currentPage, searchValue } = useSelector(selectFilter);
   const sort = useSelector(selectSort);
@@ -46,35 +45,6 @@ const Home: React.FC = () => {
     );
     window.scrollTo(0, 0);
   }, [dispatch, order, sortBy, category, search, currentPage]);
-
-  // React.useEffect(() => {
-  //   if (isMounted.current) {
-  //     const queryString = qs.stringify({
-  //       sortProperty: sort.sortProperty,
-  //       categoryId,
-  //       currentPage,
-  //     });
-  //     navigate(`?${queryString}`);
-  //   }
-  //   isMounted.current = true;
-  // }, [navigate, sort.sortProperty, categoryId, currentPage]);
-
-  // React.useEffect(() => {
-  //   if (window.location.search) {
-  //     const params = qs.parse(
-  //       window.location.search.substring(1)
-  //     ) as unknown as SearchPizzaParams;
-  //     const sort = list.find((obj) => obj.sortProperty === params.sortBy);
-  //     dispatch(
-  //       setFilters({
-  //         searchValue: params.search,
-  //         categoryId: +params.category,
-  //         currentPage: +params.currentPage,
-  //         sort: sort ? sort : list[0],
-  //       })
-  //     );
-  //   }
-  // }, [dispatch]);
 
   const skeletons = [...new Array(6)].map((_, index) => (
     <Skeleton key={index} />
